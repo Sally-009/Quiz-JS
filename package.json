@@ -1,0 +1,23 @@
+{
+  "name": "quiz-js",
+  "version": "1.0.0",
+  "description": "quiz written in Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npx prettier --write .",
+    "lint": "npx eslint ./",
+    "prepare": "husky"
+  },
+  "author": "Saori Kojima",
+  "license": "ISC",
+  "volta": {
+    "node": "20.11.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
+    "prettier": "^3.2.5"
+  }
+}
