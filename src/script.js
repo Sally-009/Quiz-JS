@@ -1,10 +1,31 @@
 'use strict';
 
-function foo() {
-  console.log('Hello world!');
-}
+document.addEventListener('DOMContentLoaded', displayQuestion());
 
-foo();
+function displayQuestion() {
+  // Initialize the question index randomly
+  let currentQuestionIndex = Math.floor(Math.random() * questionSets.length);
+
+  // set the current question
+  let currentQuestion = questionSets[currentQuestionIndex];
+
+  // define variables for the question image, text, and answers
+  let questionText = document.getElementById('question');
+  let questionImage = document.getElementById('question-image');
+  let answer1 = document.getElementById('mc_answer1');
+  let answer2 = document.getElementById('mc_answer2');
+  let answer3 = document.getElementById('mc_answer3');
+  let answer4 = document.getElementById('mc_answer4');
+
+  // set the question text and image
+  questionText.textContent = currentQuestion.text;
+  questionImage.src = currentQuestion.image;
+  answer1.textContent = currentQuestion.answers[0];
+  answer2.textContent = currentQuestion.answers[1];
+  answer3.textContent = currentQuestion.answers[2];
+  answer4.textContent = currentQuestion.answers[3];
+  let correctAnswer = currentQuestion.correctAnswer;
+}
 
 //--------------------------------
 // Dataset
