@@ -1,64 +1,112 @@
 'use strict';
+class Quiz {
+  // --------------------------------
+  // Dataset
+  // the question types
+  static QUESTION_TYPES = {
+    TRUE_FALSE: 'true_false',
+    MULTIPLE_CHOICE: 'multiple_choice',
+  };
 
-document.addEventListener('DOMContentLoaded', displayQuestion());
+  // Question sets
+  static questionSets = [
+    {
+      id: 1,
+      type: Quiz.QUESTION_TYPES.MULTIPLE_CHOICE,
+      text: 'What is the breed of this dog?',
+      image: 'images/Yorkie.jpg',
+      answers: ['Pomeranian', 'Chihuahua', 'Yorkshire Terrier', 'Shih-Tzu'],
+      correctAnswer: 'Yorkshire Terrier',
+    },
+    {
+      id: 2,
+      type: Quiz.QUESTION_TYPES.MULTIPLE_CHOICE,
+      text: 'What is the breed of this dog?',
+      image: 'images/GoldenRetriever.jpg',
+      answers: ['Golden Retriever', 'German Shepherd', 'Labrador Retriever', 'Rottweiler'],
+      correctAnswer: 'Golden Retriever',
+    },
+    {
+      id: 3,
+      type: Quiz.QUESTION_TYPES.MULTIPLE_CHOICE,
+      text: 'What is the breed of this dog?',
+      image: 'images/Shiba.jpg',
+      answers: ['Border Collie', 'ShiBa-Inu', 'Siberian Husky', 'Bulldog'],
+      correctAnswer: 'ShiBa-Inu',
+    },
+  ];
 
-function displayQuestion() {
-  // Initialize the question index randomly
-  let currentQuestionIndex = Math.floor(Math.random() * questionSets.length);
+  // --------------------------------
 
-  // set the current question
-  let currentQuestion = questionSets[currentQuestionIndex];
+  constructor() {
+    this.currentQuestionIndex = 0;
+    this.currentQuestion = null;
+    this.questionText = document.getElementById('question');
+    this.questionImage = document.getElementById('question-image');
+    this.answerLabels = document.querySelectorAll('label[for^="mc_answer"]');
+    this.answers = document.querySelectorAll('input[name="answer"]');
+    this.correctAnswer = null;
+  }
 
-  // define variables for the question image, text, and answers
-  let questionText = document.getElementById('question');
-  let questionImage = document.getElementById('question-image');
-  let answer1 = document.getElementById('mc_answer1');
-  let answer2 = document.getElementById('mc_answer2');
-  let answer3 = document.getElementById('mc_answer3');
-  let answer4 = document.getElementById('mc_answer4');
+  main() {
+    // Display the first question
+    this.displayQuestion();
 
-  // set the question text and image
-  questionText.textContent = currentQuestion.text;
-  questionImage.src = currentQuestion.image;
-  answer1.textContent = currentQuestion.answers[0];
-  answer2.textContent = currentQuestion.answers[1];
-  answer3.textContent = currentQuestion.answers[2];
-  answer4.textContent = currentQuestion.answers[3];
-  let correctAnswer = currentQuestion.correctAnswer;
+    // Add event listener for the submit button
+    document.getElementById('submit').addEventListener('click', () => {
+      this.checkAnswer();
+    });
+  }
+
+  displayQuestion() {
+    console.log('displayQuestion called');
+
+    // Initialize the question index randomly
+    this.currentQuestionIndex = Math.floor(Math.random() * Quiz.questionSets.length);
+
+    // set the current question
+    this.currentQuestion = Quiz.questionSets[this.currentQuestionIndex];
+
+    // Set the question text and image
+    this.questionText.textContent = this.currentQuestion.text;
+    this.questionImage.src = this.currentQuestion.image;
+
+    // Set the answer options
+    for (let i = 0; i < this.answerLabels.length; i++) {
+      this.answerLabels[i].textContent = this.currentQuestion.answers[i];
+      this.answers[i].value = this.currentQuestion.answers[i];
+    }
+
+    // Store the correct answer
+    this.correctAnswer = this.currentQuestion.correctAnswer;
+  }
+
+  checkAnswer() {
+    console.log('checkAnswer called');
+
+    // Get the user's answer
+    let userAnswer = '';
+    for (let i = 0; i < this.answers.length; i++) {
+      if (this.answers[i].checked) {
+        userAnswer = this.answers[i].value;
+        break;
+      }
+    }
+
+    // Check if the user's answer is correct
+    if (userAnswer === this.correctAnswer) {
+      alert('Correct!');
+    } else {
+      alert('Incorrect! The correct answer is: ' + this.correctAnswer);
+    }
+
+    // Display the next question
+    this.displayQuestion();
+  }
 }
 
-//--------------------------------
-// Dataset
-// the question types
-const QUESTION_TYPES = {
-  TRUE_FALSE: 'true_false',
-  MULTIPLE_CHOICE: 'multiple_choice',
-};
-
-// Question sets
-const questionSets = [
-  {
-    id: 1,
-    type: QUESTION_TYPES.MULTIPLE_CHOICE,
-    text: 'What is the breed of this dog?',
-    image: 'images/Yorkie.jpg',
-    answers: ['Pomeranian', 'Chihuahua', 'Yorkshire Terrier', 'Shih-Tzu'],
-    correctAnswer: 'Yorkshire Terrier',
-  },
-  {
-    id: 2,
-    type: QUESTION_TYPES.MULTIPLE_CHOICE,
-    text: 'What is the breed of this dog?',
-    image: 'images/GoldenRetriever.jpg',
-    answers: ['Golden Retriever', 'German Shepherd', 'Labrador Retriever', 'Rottweiler'],
-    correctAnswer: 'Golden Retriever',
-  },
-  {
-    id: 3,
-    type: QUESTION_TYPES.MULTIPLE_CHOICE,
-    text: 'What is the breed of this dog?',
-    image: 'images/Shiba.jpg',
-    answers: ['Border Collie', 'Shiba-Inu', 'Siberian Husky', 'Bulldog'],
-    correctAnswer: 'ShiBa-Inu',
-  },
-];
+// Create a new Quiz instance
+const quiz = new Quiz();
+document.addEventListener('DOMContentLoaded', () => {
+  quiz.main();
+});

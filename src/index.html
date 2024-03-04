@@ -9,20 +9,22 @@
   <body>
     <h1>Question</h1>
     <!-- Question sentence -->
-    <h2 id="question">What is the breed of this dog?</h2>
+    <h2 id="question"></h2>
     <img id="question-image" src="images/Yorkie.jpg" alt="a picture of a dog" />
 
     <!-- Answer -->
     <input type="radio" name="answer" id="mc_answer1" />
-    <label for="mc_answer1">Pomeranian</label>
+    <label for="mc_answer1"></label>
     <input type="radio" name="answer" id="mc_answer2" />
-    <label for="mc_answer2">Chihuahua</label>
+    <label for="mc_answer2"></label>
     <input type="radio" name="answer" id="mc_answer3" />
-    <label for="mc_answer3">Yorkshire Terrier</label>
+    <label for="mc_answer3"></label>
     <input type="radio" name="answer" id="mc_answer4" />
-    <label for="mc_answer4">Shih Tzu</label>
+    <label for="mc_answer4"></label>
 
-    <button type="submit" onclick="checkAnswer()">Check Answer</button>
+    <p id=""></p>
+
+    <button type="submit" onclick="quiz.checkAnswer()">Check Answer</button>
 
     <script src="script.js"></script>
   </body>
