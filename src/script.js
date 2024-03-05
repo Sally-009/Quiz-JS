@@ -1,11 +1,5 @@
 'use strict';
-
-const questionSets = require('./questionSets');
-
 class Quiz {
-  // --------------------------------
-  // Dataset
-  // --------------------------------
   // Question sets
   static questionSets = [
     {
@@ -89,16 +83,15 @@ class Quiz {
       note: 'A group of pugs is commonly referred to as a "grumble," which is a playful and fitting term for these charming and comical dogs when they gather together.',
     },
   ];
-  // --------------------------------
 
-  constructor(quizSets) {
+  constructor() {
     this.questionText = document.getElementById('question');
     this.questionImage = document.getElementById('question-image');
     this.answers = document.getElementsByName('answer');
     this.currentQuestionNumber = 1;
     this.correctCount = 0;
-    this.questionLength = quizSets.length;
-    this.shuffleQuestionSets(quizSets);
+    this.questionLength = Quiz.questionSets.length;
+    this.shuffleQuestionSets();
   }
   main() {
     this.displayQuestion();
@@ -116,11 +109,10 @@ class Quiz {
         this.shuffledQuestionSets[i],
       ];
     }
-
   }
 
   displayQuestion() {
-    const currentQuestion = this.shuffledQuestionSets.pop(); // Retrieve and remove the last question
+    const currentQuestion = this.shuffledQuestionSets.shift(); // Retrieve and remove the first question
 
     // Check if there are no more questions
     if (!currentQuestion) {
@@ -200,10 +192,8 @@ class Quiz {
   }
 }
 
-// --------------------------------
-
 // Create a new Quiz instance
-const quiz = new Quiz(questionSets);
+const quiz = new Quiz();
 document.addEventListener('DOMContentLoaded', () => {
   quiz.main();
 });
