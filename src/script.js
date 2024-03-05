@@ -97,6 +97,7 @@ class Quiz {
     this.answers = document.getElementsByName('answer');
     this.correctAnswer = null;
     this.note = '';
+    this.currentQuestionNumber = 1;
     this.correctCount = 0;
     this.questionLength = Quiz.questionSets.length;
   }
@@ -116,7 +117,7 @@ class Quiz {
     this.currentQuestion = Quiz.questionSets[this.currentQuestionIndex];
 
     // Set the question text and image
-    this.questionText.textContent = this.currentQuestion.text;
+    this.questionText.textContent = `${this.currentQuestionNumber}. ${this.currentQuestion.text}`;
     this.questionImage.src = this.currentQuestion.image;
 
     // Set the answer options
@@ -186,6 +187,9 @@ class Quiz {
       this.gameOver();
       return;
     }
+
+    // Increment the current question number
+    this.currentQuestionNumber++;
 
     // Display the next question
     this.displayQuestion();
