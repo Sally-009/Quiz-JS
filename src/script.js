@@ -1,4 +1,7 @@
 'use strict';
+
+const questionSets = require('./questionSets');
+
 class Quiz {
   // --------------------------------
   // Dataset
@@ -86,17 +89,16 @@ class Quiz {
       note: 'A group of pugs is commonly referred to as a "grumble," which is a playful and fitting term for these charming and comical dogs when they gather together.',
     },
   ];
-
   // --------------------------------
 
-  constructor() {
+  constructor(quizSets) {
     this.questionText = document.getElementById('question');
     this.questionImage = document.getElementById('question-image');
     this.answers = document.getElementsByName('answer');
     this.currentQuestionNumber = 1;
     this.correctCount = 0;
-    this.questionLength = Quiz.questionSets.length;
-    this.shuffleQuestionSets();
+    this.questionLength = quizSets.length;
+    this.shuffleQuestionSets(quizSets);
   }
   main() {
     this.displayQuestion();
@@ -114,6 +116,7 @@ class Quiz {
         this.shuffledQuestionSets[i],
       ];
     }
+
   }
 
   displayQuestion() {
@@ -197,8 +200,10 @@ class Quiz {
   }
 }
 
+// --------------------------------
+
 // Create a new Quiz instance
-const quiz = new Quiz();
+const quiz = new Quiz(questionSets);
 document.addEventListener('DOMContentLoaded', () => {
   quiz.main();
 });
