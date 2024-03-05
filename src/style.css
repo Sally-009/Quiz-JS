@@ -9,20 +9,19 @@ body {
   padding: 20px;
 }
 
-h1 {
+h1,
+h2 {
   text-align: center;
   color: #333;
 }
 
 h2 {
-  text-align: center;
-  color: #555;
   margin-bottom: 20px;
 }
 
 img {
   display: block;
-  margin: 0 auto;
+  margin: 10px auto;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 500px;
@@ -35,7 +34,7 @@ input[type='radio'] {
 label {
   display: block;
   text-align: center;
-  margin: 10px auto;
+  margin: 0 auto;
   padding: 10px 15px;
   background-color: #fff;
   border-radius: 30px;
@@ -56,7 +55,7 @@ input[type='radio']:checked + label {
 
 button {
   display: block;
-  margin: 20px auto;
+  margin: auto;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
