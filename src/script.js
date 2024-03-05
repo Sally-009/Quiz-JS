@@ -23,7 +23,7 @@ class Quiz {
     },
     {
       id: 3,
-      text: 'What is the breed of this dog?',
+      text: 'What i of this dog?',
       image: 'images/Shiba.jpg',
       answers: ['Border Collie', 'ShiBa-Inu', 'Siberian Husky', 'Bulldog'],
       correctAnswer: 'ShiBa-Inu',
@@ -90,42 +90,45 @@ class Quiz {
   // --------------------------------
 
   constructor() {
-    this.currentQuestionIndex = 0;
-    this.currentQuestion = null;
     this.questionText = document.getElementById('question');
     this.questionImage = document.getElementById('question-image');
     this.answers = document.getElementsByName('answer');
-    this.correctAnswer = null;
-    this.note = '';
     this.currentQuestionNumber = 1;
     this.correctCount = 0;
     this.questionLength = Quiz.questionSets.length;
+    this.shuffleQuestionSets();
   }
-
   main() {
-    // Display the first question
     this.displayQuestion();
   }
 
+  shuffleQuestionSets() {
+    // Shuffle the question sets
+    for (let i = Quiz.questionSets.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [Quiz.questionSets[i], Quiz.questionSets[j]] = [Quiz.questionSets[j], Quiz.questionSets[i]];
+    }
+  }
+
   displayQuestion() {
-    console.log('displayQuestion called');
+    const currentQuestion = Quiz.questionSets.pop(); // Retrieve and remove the last question
 
-    // Initialize the question index randomly
-    this.currentQuestionIndex = Math.floor(Math.random() * Quiz.questionSets.length);
+    // Check if there are no more questions
+    if (!currentQuestion) {
+      this.gameOver();
+      return;
+    }
 
-    // set the current question
-    this.currentQuestion = Quiz.questionSets[this.currentQuestionIndex];
+    // Display the current question
+    this.questionText.textContent = `${this.currentQuestionNumber}. ${currentQuestion.text}`;
+    this.questionImage.src = currentQuestion.image;
 
-    // Set the question text and image
-    this.questionText.textContent = `${this.currentQuestionNumber}. ${this.currentQuestion.text}`;
-    this.questionImage.src = this.currentQuestion.image;
-
-    // Set the answer options
+    // Create an answer container
     const answerContainer = document.getElementById('answers');
-    answerContainer.innerHTML = ''; // Clear previous answer options
+    answerContainer.innerHTML = '';
 
-    // Add each answer option dynamically
-    this.currentQuestion.answers.forEach((answer, index) => {
+    // Create radio buttons for the answers
+    currentQuestion.answers.forEach((answer, index) => {
       const radioButton = document.createElement('input');
       radioButton.type = 'radio';
       radioButton.name = 'answer';
@@ -138,30 +141,20 @@ class Quiz {
 
       answerContainer.appendChild(radioButton);
       answerContainer.appendChild(label);
-      answerContainer.appendChild(document.createElement('br')); // Add line break between options
+      answerContainer.appendChild(document.createElement('br'));
     });
 
-    // Store the correct answer
-    this.correctAnswer = this.currentQuestion.correctAnswer;
-
-    // Store the note
-    this.note = this.currentQuestion.note;
+    // Set the current question index, correct answer, and note
+    this.correctAnswer = currentQuestion.correctAnswer;
+    this.note = currentQuestion.note;
   }
 
   checkAnswer() {
-    console.log('checkAnswer called');
+    // Check if the user has selected an answer
+    const userAnswer = [...this.answers].find((answer) => answer.checked)?.value;
 
-    // Get the user's answer
-    let userAnswer = '';
-    for (let i = 0; i < this.answers.length; i++) {
-      if (this.answers[i].checked) {
-        userAnswer = this.answers[i].value;
-        break;
-      }
-    }
-
-    // Check if the user's answer is selected
-    if (userAnswer === '') {
+    // If the user has not selected an answer, display an alert message
+    if (!userAnswer) {
       alert('Please select your answer.');
       return;
     }
@@ -174,37 +167,26 @@ class Quiz {
       alert('Incorrect!\n\nCorrect answer: ' + this.correctAnswer + '\n\n' + this.note);
     }
 
-    // Clear the user's answer
-    for (let i = 0; i < this.answers.length; i++) {
-      this.answers[i].checked = false;
+    // Uncheck the radio buttons
+    for (const answer of this.answers) {
+      answer.checked = false;
     }
-
-    // Remove the current question from the question set
-    Quiz.questionSets.splice(this.currentQuestionIndex, 1);
-
-    // Check if the game is over
-    if (Quiz.questionSets.length === 0) {
-      this.gameOver();
-      return;
-    }
-
-    // Increment the current question number
-    this.currentQuestionNumber++;
 
     // Display the next question
+    this.currentQuestionNumber++;
     this.displayQuestion();
   }
 
-  // Quiz game over
   gameOver() {
-    console.log('gameOver called');
-    // Display the game over message and show how many questions the user answered correctly
+    // Display the game over message
     alert(
       'Game Over!\n\nYou answered ' + this.correctCount + ' out of ' + this.questionLength + ' questions correctly.'
     );
 
     // Reset the game
     this.correctCount = 0;
+    this.currentQuestionNumber = 1;
+    this.shuffleQuestionSets();
     this.displayQuestion();
   }
 }
