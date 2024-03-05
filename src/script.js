@@ -23,7 +23,7 @@ class Quiz {
     },
     {
       id: 3,
-      text: 'What i of this dog?',
+      text: 'What is the breed of this dog?',
       image: 'images/Shiba.jpg',
       answers: ['Border Collie', 'ShiBa-Inu', 'Siberian Husky', 'Bulldog'],
       correctAnswer: 'ShiBa-Inu',
@@ -103,15 +103,21 @@ class Quiz {
   }
 
   shuffleQuestionSets() {
-    // Shuffle the question sets
-    for (let i = Quiz.questionSets.length - 1; i > 0; i--) {
+    // Create a copy of the question sets array
+    this.shuffledQuestionSets = [...Quiz.questionSets];
+
+    // Shuffle the copy of question sets
+    for (let i = this.shuffledQuestionSets.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [Quiz.questionSets[i], Quiz.questionSets[j]] = [Quiz.questionSets[j], Quiz.questionSets[i]];
+      [this.shuffledQuestionSets[i], this.shuffledQuestionSets[j]] = [
+        this.shuffledQuestionSets[j],
+        this.shuffledQuestionSets[i],
+      ];
     }
   }
 
   displayQuestion() {
-    const currentQuestion = Quiz.questionSets.pop(); // Retrieve and remove the last question
+    const currentQuestion = this.shuffledQuestionSets.pop(); // Retrieve and remove the last question
 
     // Check if there are no more questions
     if (!currentQuestion) {
